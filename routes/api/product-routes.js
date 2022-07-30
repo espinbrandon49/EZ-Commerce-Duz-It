@@ -137,3 +137,8 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
+
+//POST - category_id???
+//PUT - how do we do this in insomnia?
+
+//get routes showing up as OBJECTS
