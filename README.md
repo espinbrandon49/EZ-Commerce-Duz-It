@@ -13,6 +13,7 @@ JavaScript, Express.js, Node.js, Sequelize, MySQL, Insomnia
 ## Table of Contents 
   * [Installation](#installation)
   * [Usage](#usage)
+  * [Demo Video](#demo)
   * [License](#license)
   * [Contributing](#contributing)
   * [Collaboration](#collaboration)
@@ -51,6 +52,9 @@ npm run start
 ```
 ### Insomnia can be used to open the API routes
 [Insomnia.rest](https://docs.insomnia.rest/)
+
+## Demo
+[![A video thumbnail shows the command-line employee management application with a play button overlaying the view.](./assets/images/screenshot.png)](https://user-images.githubusercontent.com/102924713/182070530-5ff8025f-5e36-440a-afed-574312501318.mp4)
 
 ## License 
 ### MIT License 
