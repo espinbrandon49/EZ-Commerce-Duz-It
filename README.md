@@ -53,7 +53,7 @@ npm run seed
 ```
 npm run start
 ```
-### Insomnia can be used to open the API API POST, PUT, and DELETE routes
+### Insomnia can be used to open the API GET POST, PUT, and DELETE routes
 5. [Insomnia.rest](https://docs.insomnia.rest/)
 
 ## Demo
