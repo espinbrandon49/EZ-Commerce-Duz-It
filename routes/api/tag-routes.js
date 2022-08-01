@@ -85,6 +85,3 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
-
-//GET ROUTES - products is showing up as OBJECT - shouldn't matter?
-//Why does this file require productTag?

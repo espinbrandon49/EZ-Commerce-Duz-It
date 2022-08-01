@@ -86,6 +86,3 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
-
-//DELETE - can't delete a category with products
-//GET ROUTES - products is showing up as OBJECT - shouldn't matter?
