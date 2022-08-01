@@ -3,7 +3,7 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
 
 ## Description 
-A back end for an e-commerce site.  I configured a working Express.js API to use Sequelize to interact with a MySQL database. 
+A back end for an e-commerce site.  I configured a functional Express.js API to use Sequelize to interact with a MySQL database and to use an . 
 
 * [GitHub repository](https://github.com/espinbrandon49/EZ-Commerce-Duz-It)
 
@@ -33,28 +33,31 @@ npm install
 ```
 
 ## Usage 
-### Create the database
+Enter schema and seed commands to create and seed a development database with test data.
+and when you enter the command to invoke the application my server is started and the Sequelize models are synced to the MySQL database and you can test API POST, PUT, and DELETE routes in Insomnia to successfully create, update, and delete data in my database
+
+### Create the development database
 1. Go to the directory of schema.sql
 
 2. Run
 ```
 source schema.sql
 ```
-### Seed the database
+### Seed the database with test data
 1. Open a terminal and enter this command
 ```
 npm run seed
 ```
-### Start the application
+### Invoke the application to start the server
 1.  in the terminal enter this command
 ```
 npm run start
 ```
-### Insomnia can be used to open the API routes
+### Insomnia can be used to open the API API POST, PUT, and DELETE routes
 [Insomnia.rest](https://docs.insomnia.rest/)
 
 ## Demo
-[![A video thumbnail shows the command-line employee management application with a play button overlaying the view.](./assets/images/screenshot.png)](https://user-images.githubusercontent.com/102924713/182070530-5ff8025f-5e36-440a-afed-574312501318.mp4)
+[![A video thumbnail shows the command-line employee management application with a play button overlaying the view.](./assets/demo-video-screenshot.png)](https://user-images.githubusercontent.com/102924713/182070530-5ff8025f-5e36-440a-afed-574312501318.mp4)
 
 ## License 
 ### MIT License 
@@ -63,7 +66,6 @@ The content of this application is licensed under the MIT License.
 [https://choosealicense.com/licenses/mit/](https://choosealicense.com/licenses/mit/) 
 
 ## Contributing 
-
 [Contributor Covenant](https://www.contributor-covenant.org/)
 
 ## Collaboration
