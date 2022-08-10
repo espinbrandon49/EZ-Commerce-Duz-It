@@ -57,9 +57,10 @@ npm run start
 5. [Insomnia.rest](https://docs.insomnia.rest/)
 
 ## Demo
-[![A video thumbnail shows the command-line employee management application with a play button overlaying the view.](./assets/demo-video-screenshot.png)](https://user-images.githubusercontent.com/102924713/182070530-5ff8025f-5e36-440a-afed-574312501318.mp4)
+[![A video thumbnail shows the command-line employee management application with a play button overlaying the view.](./assets/demo-video-screenshot.png)](https://user-images.githubusercontent.com/102924713/183825504-21e138a0-ba69-4317-9bcd-b6e22738b4e6.mp4)
 
 ## License 
+
 ### MIT License 
 The content of this application is licensed under the MIT License. 
 
