@@ -1,25 +1,19 @@
-import './App.css';
-import axios from 'axios'
-import { useEffect, useState } from 'react';
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Home from './pages/Home'
+import AddCategory from "./pages/AddCategory";
 
 function App() {
-const [categories, setCategories] = useState([])
-
-  useEffect(() => {
-    axios.get('http://localhost:3001/api/categories').then((response) => {
-      setCategories(response.data)
-    })
-  }, [])
-
   return (
     <div className="App">
-     {categories.map((value, key) => {
-      return(
-        <div key={value.id}>
-          <div >{value.category_name}</div>
-        </div>
-      )
-     })}
+      <Router>
+        <Link to='/addcategory'>Add A Category</Link>
+        <Link to='/'>Home Page</Link>
+        <Routes>
+          <Route path="/" exact element={<Home />} />
+          <Route path="/addcategory" exact element={<AddCategory />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
