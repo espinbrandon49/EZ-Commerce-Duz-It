@@ -1,31 +1,33 @@
 import React from 'react';
 import axios from 'axios';
-
-import {Formik, Form, Field, ErrorMessage} from 'formik';
+import { useNavigate } from 'react-router-dom'
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 const AddCategory = () => {
+
+  let navigate = useNavigate()
 
   const initialValues = {
     category_name: ""
   }
 
-const validationSchema = Yup.object().shape({
-  category_name: Yup.string().min(3).max(15).required("Category names are 3-15 characters long")
-})
+  const validationSchema = Yup.object().shape({
+    category_name: Yup.string().min(3).max(15).required("Category names are 3-15 characters long")
+  })
 
   const onSubmit = (data) => {
     axios.post('http://localhost:3001/api/categories', data).then((response) => {
-      console.log(`Category: ${response.data} added`)
+      navigate('/')
     });
   };
 
   return (
     <div className='addCategoryPage'>
-      <Formik initialValues={initialValues} onSubmit={onSubmit}validationSchema={validationSchema}  >
+      <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}  >
         <Form>
           <label >Category: </label>
-          
+
           <Field
             autoComplete='off'
             id="categoryInput"
