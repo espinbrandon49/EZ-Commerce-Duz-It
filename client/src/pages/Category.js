@@ -35,11 +35,19 @@ const Category = () => {
   });
 
   const onSubmit = (data, { resetForm }) => {
-    axios.post("http://localhost:3001/api/products", data).then((response) => {
-      const productToAdd = response.data;
-      console.log(productToAdd);
-      setProducts([...products, productToAdd]);
-      resetForm()
+    axios.post("http://localhost:3001/api/products", data, {
+      headers: {
+        accessToken: sessionStorage.getItem("accessToken")
+      }
+    }).then((response) => {
+      if (response.data.error) {
+        console.log(response.data.error)
+      } else {
+        const productToAdd = response.data;
+        console.log(productToAdd);
+        setProducts([...products, productToAdd]);
+        resetForm()
+      }
     });
   };
 

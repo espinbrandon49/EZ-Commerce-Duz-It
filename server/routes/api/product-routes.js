@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
+const {validateToken} = require('../../middleWares/AuthMiddlewares')
+
 // The `/api/products` endpoint
 
 // get all products
@@ -46,7 +48,7 @@ router.get('/:category_id', async (req, res) => {
 });
 
 // create new product
-router.post('/', (req, res) => {
+router.post('/', validateToken, (req, res) => {
   /* req.body should look like this...
     {
       product_name: "Basketball",
