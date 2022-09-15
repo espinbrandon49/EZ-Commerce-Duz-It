@@ -30,9 +30,11 @@ const Category = () => {
 
   const validationSchema = Yup.object().shape({
     product_name: Yup.string().min(3).max(15).required("Product names are 3-15 characters long"),
+    price: Yup.number().required("Price is a number").positive(),
+    stock: Yup.number().required("Stock is an integer").positive().integer()
   });
 
-  const onSubmit = (data, {resetForm}) => {
+  const onSubmit = (data, { resetForm }) => {
     axios.post("http://localhost:3001/api/products", data).then((response) => {
       const productToAdd = response.data;
       console.log(productToAdd);
@@ -67,8 +69,16 @@ const Category = () => {
             <Form>
               <label>Product</label>
               <Field autoComplete="off" id="product_nameInput" name="product_name" placeholder="(Ex. Navy Blue Shorts...)" />
+              <ErrorMessage name="product_name" component='span' />
+              <br />
+              <label>Price</label>
               <Field autoComplete="off" id="priceInput" name="price" placeholder="(Ex.10...)" />
+              <ErrorMessage name="price" component='span' />
+              <br />
+              <label>Stock</label>
               <Field autoComplete="off" id="stock_nameInput" name="stock" placeholder="(Ex. 10...)" />
+              <ErrorMessage name="stock" component='span' />
+              <br />
               <button type="submit">Add A Product</button>
             </Form>
           </Formik>
