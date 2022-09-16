@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { Category, Product } = require('../../models');
-
+const {validateToken} = require('../../middleWares/AuthMiddlewares')
 
 // The `/api/categories` endpoint
 // find all categories

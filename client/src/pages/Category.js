@@ -37,7 +37,7 @@ const Category = () => {
   const onSubmit = (data, { resetForm }) => {
     axios.post("http://localhost:3001/api/products", data, {
       headers: {
-        accessToken: sessionStorage.getItem("accessToken")
+        accessToken: localStorage.getItem("accessToken")
       }
     }).then((response) => {
       if (response.data.error) {
