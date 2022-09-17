@@ -6,6 +6,7 @@ import Category from "./pages/Category";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import { AuthContext } from "./helpers/AuthContext";
+// username can be accessed everywhere by importing {AuthContext} and using authState.username
 import { useState, useEffect } from "react";
 import axios from "axios";
 
