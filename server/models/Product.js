@@ -19,6 +19,10 @@ Product.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     price: {
       type: DataTypes.DECIMAL,
       allowNull: false,

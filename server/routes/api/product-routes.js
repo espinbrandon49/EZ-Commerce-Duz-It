@@ -52,6 +52,7 @@ router.post('/', validateToken, (req, res) => {
   /* req.body should look like this...
     {
       product_name: "Basketball",
+      username: "username"
       price: 200.00,
       stock: 3,
       tagIds: [1, 2, 3, 4]

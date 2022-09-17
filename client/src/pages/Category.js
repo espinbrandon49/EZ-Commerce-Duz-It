@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { AuthContext } from "../helpers/AuthContext";
 
 const Category = () => {
-
   let { id } = useParams();
   const [singleCategory, setSingleCategory] = useState({});
   const [products, setProducts] = useState([]);
+  const { authState } = useContext(AuthContext);
 
   useEffect(() => {
     axios.get(`http://localhost:3001/api/categories/${id}`).then((response) => {
@@ -22,33 +23,50 @@ const Category = () => {
 
   const initialValues = {
     product_name: "",
+    username: authState.username,
     price: "",
     stock: "",
     category_id: id,
     tagIds: [],
   };
-
+  console.log(authState.username);
   const validationSchema = Yup.object().shape({
     product_name: Yup.string().min(3).max(15).required("Product names are 3-15 characters long"),
     price: Yup.number().required("Price is a number").positive(),
-    stock: Yup.number().required("Stock is an integer").positive().integer()
+    stock: Yup.number().required("Stock is an integer").positive().integer(),
   });
 
   const onSubmit = (data, { resetForm }) => {
-    axios.post("http://localhost:3001/api/products", data, {
-      headers: {
-        accessToken: localStorage.getItem("accessToken")
-      }
-    }).then((response) => {
-      if (response.data.error) {
-        console.log(response.data.error)
-      } else {
-        const productToAdd = response.data;
-        console.log(productToAdd);
-        setProducts([...products, productToAdd]);
-        resetForm()
-      }
-    });
+    axios
+      .post("http://localhost:3001/api/products", data, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        if (response.data.error) {
+          console.log(response.data.error);
+        } else {
+          const productToAdd = response.data;
+          console.log(productToAdd);
+          setProducts([...products, productToAdd]);
+          resetForm();
+        }
+      });
+  };
+
+  const deleteProduct = (id) => {
+    axios
+      .delete(`http://localhost:3001/api/products/${id}`, {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      })
+      .then(() => {
+        setProducts(
+          products.filter((val) => {
+            return val.id !== id;
+          })
+        );
+      });
   };
 
   return (
@@ -68,6 +86,7 @@ const Category = () => {
                 </div>
                 <div>${value.price}</div>
                 <div>in Stock: {value.stock} </div>
+                {authState.username === value.username && <button onClick={() => deleteProduct(value.id)}> X</button>}
               </div>
             );
           })}
@@ -77,15 +96,15 @@ const Category = () => {
             <Form>
               <label>Product</label>
               <Field autoComplete="off" id="product_nameInput" name="product_name" placeholder="(Ex. Navy Blue Shorts...)" />
-              <ErrorMessage name="product_name" component='span' />
+              <ErrorMessage name="product_name" component="span" />
               <br />
               <label>Price</label>
               <Field autoComplete="off" id="priceInput" name="price" placeholder="(Ex.10...)" />
-              <ErrorMessage name="price" component='span' />
+              <ErrorMessage name="price" component="span" />
               <br />
               <label>Stock</label>
               <Field autoComplete="off" id="stock_nameInput" name="stock" placeholder="(Ex. 10...)" />
-              <ErrorMessage name="stock" component='span' />
+              <ErrorMessage name="stock" component="span" />
               <br />
               <button type="submit">Add A Product</button>
             </Form>
