@@ -31,8 +31,8 @@ router.post('/login', async (req, res) => {
       {username: user.username, id: user.id},
       "importantsecret"
     );
-    res.json(accessToken);
-  })
+    res.json({token: accessToken, username: username, id: user.id});
+  });
 })
 
 router.get('/auth', validateToken, (req, res) => {
@@ -40,3 +40,5 @@ router.get('/auth', validateToken, (req, res) => {
 });
 
 module.exports = router;
+
+//logout, confirm login w/username displayed, have access to username everywhere through AuthContext authState.username, delete products created by user 
