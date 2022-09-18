@@ -45,6 +45,7 @@ function App() {
       status: false,
     });
   };
+  
   return (
     <div className="App">
       <AuthContext.Provider value={{ authState, setAuthState }}>
@@ -76,3 +77,8 @@ function App() {
 }
 
 export default App;
+//authstate becomes undefined after I log in
+//display product's tags
+//add a tag
+//delete a tag
+//delete a category
