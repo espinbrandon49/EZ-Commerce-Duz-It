@@ -11,8 +11,7 @@ const Category = () => {
   const [products, setProducts] = useState([]);
   const [tags, setTags] = useState([]);
   const { authState } = useContext(AuthContext);
-  console.log(authState)
-  
+
   useEffect(() => {
     axios.get(`http://localhost:3001/api/categories/${id}`).then((response) => {
       setSingleCategory(response.data);
@@ -26,6 +25,7 @@ const Category = () => {
       setTags(response.data)
     });
   }, []);
+  // console.log(authState)
 
   const initialValues = {
     product_name: "",
@@ -55,13 +55,13 @@ const Category = () => {
         } else {
           const productToAdd = response.data;
           console.log(productToAdd)
-          setProducts([...products, data]);
+          setProducts([...products, data])
           console.log(products)
           resetForm();
         }
-      });
+      })
   };
- 
+
   const deleteProduct = (id) => {
     axios
       .delete(`http://localhost:3001/api/products/${id}`, {
@@ -94,7 +94,14 @@ const Category = () => {
                 <div>${value.price}</div>
                 <div>in Stock: {value.stock} </div>
                 <h3>PRODUCT TAGS:
-
+                  {
+                    tags.filter(tag => {
+                      let x = tag.products.map((el) => el.product_name)
+                      if (x.includes(value.product_name)) {
+                        return tag.tag_name
+                      }
+                    }).map(el => el.tag_name)
+                  }
                 </h3>
                 {authState.username === value.username && <button onClick={() => deleteProduct(value.id)}> X</button>}
               </div>
@@ -139,48 +146,3 @@ const Category = () => {
 };
 
 export default Category;
-
-
-  //  {/* <label>
-  //                 <Field type="checkbox" name="tagIds" value="1" />
-  //                 rock music
-  //               </label>
-  //               <label>
-  //                 <Field type="checkbox" name="tagIds" value="2" />
-  //                 pop music
-  //               </label>
-  //               <label>
-  //                 <Field type="checkbox" name="tagIds" value="3" />
-  //                 blue
-  //               </label>
-  //               <label>
-  //                 <Field type="checkbox" name="tagIds" value="4" />
-  //                 red
-  //               </label>
-  //               <label>
-  //                 <Field type="checkbox" name="tagIds" value="5" />
-  //                 green
-  //               </label>
-  //               <label>
-  //                 <Field type="checkbox" name="tagIds" value="6" />
-  //                 white
-  //               </label>
-  //               <label>
-  //                 <Field type="checkbox" name="tagIds" value="7" />
-  //                 gold
-  //               </label>
-  //               <label>
-  //                 <Field type="checkbox" name="tagIds" value="8" />
-  //                 poip culture
-  //               </label> */}
-
-                // {/* {
-                //   tags.map((tag, key) => {
-                //     return (
-                //       <label key={key}>
-                //         <Field type="checkbox" name="tagIds" value={tag.id} />
-                //         {tag.tag_name}
-                //       </label>
-                //     )
-                //   })
-                // } */}
