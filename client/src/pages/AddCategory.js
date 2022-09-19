@@ -10,13 +10,14 @@ const AddCategory = () => {
   let navigate = useNavigate()
 
   useEffect(() => {
-    if (!authState.status) {
+    if (!localStorage.getItem('accessToken')) {
       navigate('/login')
     }
   }, [])
 
   const initialValues = {
-    category_name: ""
+    category_name: "",
+    username: authState.username
   }
 
   const validationSchema = Yup.object().shape({
@@ -25,6 +26,7 @@ const AddCategory = () => {
 
   const onSubmit = (data) => {
     axios.post('http://localhost:3001/api/categories', data).then((response) => {
+      console.log(response.data)
       navigate('/')
     });
   };

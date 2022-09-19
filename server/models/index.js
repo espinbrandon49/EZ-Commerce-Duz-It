@@ -32,6 +32,11 @@ Users.hasMany(Product, {
   onDelete: 'cascade'
 })
 
+// Users have many Product
+Users.hasMany(Category, {
+  onDelete: 'cascade'
+})
+
 module.exports = {
   Product,
   Category,
