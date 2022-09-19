@@ -25,7 +25,9 @@ const AddCategory = () => {
   })
 
   const onSubmit = (data) => {
-    axios.post('http://localhost:3001/api/categories', data).then((response) => {
+    axios.post('http://localhost:3001/api/categories', data, {
+      headers: {accessToken: localStorage.getItem("accessToken")},
+    }).then((response) => {
       console.log(response.data)
       navigate('/')
     });

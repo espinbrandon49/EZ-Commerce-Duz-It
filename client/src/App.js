@@ -6,6 +6,7 @@ import AddTag from "./pages/AddTag";
 import Category from "./pages/Category";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
+import Profile from "./pages/Profile";
 import PageNotFound from "./pages/PageNotFound";
 import { AuthContext } from "./helpers/AuthContext";
 // username can be accessed everywhere by importing {AuthContext} and using authState.username
@@ -71,7 +72,7 @@ function App() {
               )}
             </div>
             <div className="loggedInContainer">
-              <h1>{authState.username}</h1>
+              <h1><Link to={`/profile/${authState.id}`}>{authState.username}</Link> </h1>
               {authState.status && <button onClick={logout}>Logout</button>}
             </div>
           </div>
@@ -81,7 +82,8 @@ function App() {
             <Route path="/addtag" exact element={<AddTag />} />
             <Route path="/category/:id" exact element={<Category />} />
             <Route path="/registration" exact element={<Registration />} />
-            <Route path="login" exact element={<Login />} />
+            <Route path="/login" exact element={<Login />} />
+            <Route path="/profile/:id" exact element={<Profile/>} />
             <Route path="*" exact element={<PageNotFound />} />
           </Routes>
         </Router>
@@ -93,7 +95,5 @@ function App() {
 export default App;
 
 //display product's tags immediately, currently needs refresh
-//refreshing homepage navigates to login if I am logged in
-
-//add user to category by username
+//see profile dashboard notes
 
