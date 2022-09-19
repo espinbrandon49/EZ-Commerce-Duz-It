@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
-const {validateToken} = require('../../middleWares/AuthMiddlewares')
+const { validateToken } = require('../../middleWares/AuthMiddlewares')
 
 // The `/api/products` endpoint
 
@@ -35,7 +35,7 @@ router.get('/:category_id', async (req, res) => {
 
     const category_id = req.params.category_id
     const products = await Product.findAll({ where: { category_id: category_id } });
-    
+
     if (!products) {
       res.status(404).json({ message: 'No product found with this id!' })
       return;
@@ -47,14 +47,23 @@ router.get('/:category_id', async (req, res) => {
   }
 });
 
+//get products by user id
+router.get('/productbyuserId/:id', async (req, res) => {
+  const id = req.params.id;
+  const listOfProducts = await Product.findAll({ where: { userId: id } });
+  res.json(listOfProducts)
+})
+
 // create new product
 router.post('/', validateToken, (req, res) => {
   /* req.body should look like this...
     {
       product_name: "Basketball",
-      username: "username"
+      username: authState.username
       price: 200.00,
       stock: 3,
+      category_id: id,
+      userId: authState.id,
       tagIds: [1, 2, 3, 4]
     }
   */

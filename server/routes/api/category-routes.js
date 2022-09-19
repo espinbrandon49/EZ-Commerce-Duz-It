@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { Category, Product } = require('../../models');
-const {validateToken} = require('../../middleWares/AuthMiddlewares')
+const { validateToken } = require('../../middleWares/AuthMiddlewares')
 
 // The `/api/categories` endpoint
 // find all categories
@@ -19,8 +19,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-  // find one category by its `id` value
-  // be sure to include its associated Products
+// find one category by its `id` value
+// be sure to include its associated Products
 router.get('/:id', async (req, res) => {
   try {
     const categoryData = await Category.findByPk(req.params.id, {
@@ -37,11 +37,20 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// get categories by user id
+router.get('/byuserId/:id', async (req, res) => {
+  const id = req.params.id;
+  const listOfCategories = await Category.findAll({ where: { userId: id } });
+  res.json(listOfCategories)
+})
+
 // create a new category
-router.post('/', async (req, res) => {
+router.post('/', validateToken, async (req, res) => {
   try {
-    const categoryData = await Category.create(req.body)
-    res.status(200).json(categoryData)
+    const category = req.body;
+    category.userId = req.user.id
+    await Category.create(category)
+    res.status(200).json(category)
   } catch (err) {
     res.status(400).json(err)
   }

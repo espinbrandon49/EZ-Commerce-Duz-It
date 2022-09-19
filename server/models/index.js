@@ -32,7 +32,7 @@ Users.hasMany(Product, {
   onDelete: 'cascade'
 })
 
-// Users have many Product
+// Users have many Categories
 Users.hasMany(Category, {
   onDelete: 'cascade'
 })

@@ -33,6 +33,7 @@ const Category = () => {
     price: "",
     stock: "",
     category_id: id,
+    userId: authState.id,
     tagIds: [],
   };
 
