@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { AuthContext } from "../helpers/AuthContext";
 
 const AddCategory = () => {
+  const { authState } = useContext(AuthContext);
   let navigate = useNavigate()
+
+  useEffect(() => {
+    if (!authState.status) {
+      navigate('/login')
+    }
+  }, [])
+
   const initialValues = {
     category_name: ""
   }

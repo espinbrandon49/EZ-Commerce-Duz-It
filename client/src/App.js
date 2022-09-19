@@ -6,7 +6,7 @@ import AddTag from "./pages/AddTag";
 import Category from "./pages/Category";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
-import PageNotFound from "./pages/PageNotFound"
+import PageNotFound from "./pages/PageNotFound";
 import { AuthContext } from "./helpers/AuthContext";
 // username can be accessed everywhere by importing {AuthContext} and using authState.username
 import { useState, useEffect } from "react";
@@ -47,25 +47,33 @@ function App() {
       status: false,
     });
   };
-  
+
   return (
     <div className="App">
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
-          <Link to="/addcategory">Add A Category</Link> <br />
-          <Link to="/addtag">Add A Tag</Link> <br />
-          <Link to="/">Home Page</Link> <br />
-          {!authState.status ? (
-            <>
-              <Link to="/login">Login</Link> <br />
-              <Link to="/registration">Registration</Link>
-              <br />
-              <br />
-            </>
-          ) : (
-            <button onClick={logout}>Logout</button>
-          )}
-          <h1>{authState.username}</h1>
+          <div className="navbar">
+            <div className="links">
+              {!authState.status ? (
+                <>
+                  <Link to="/login">Login</Link> <br />
+                  <Link to="/registration">Registration</Link>
+                  <br />
+                  <br />
+                </>
+              ) : (
+                <>
+                  <Link to="/addcategory">Add A Category</Link> <br />
+                  <Link to="/addtag">Add A Tag</Link> <br />
+                  <Link to="/">Home Page</Link> <br />
+                </>
+              )}
+            </div>
+            <div className="loggedInContainer">
+              <h1>{authState.username}</h1>
+              {authState.status && <button onClick={logout}>Logout</button>}
+            </div>
+          </div>
           <Routes>
             <Route path="/" exact element={<Home />} />
             <Route path="/addcategory" exact element={<AddCategory />} />
@@ -87,5 +95,5 @@ export default App;
 //delete a category
 //update products
 
-//create PageNotFound
-//create AddTag
+//fix navbar to render conditionally if loggedin/!loggedin
+
