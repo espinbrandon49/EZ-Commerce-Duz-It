@@ -10,7 +10,7 @@ const AddTag = () => {
   let navigate = useNavigate()
 
   useEffect(() => {
-    if (!authState.status) {
+    if (!localStorage.getItem('accessToken')) {
       navigate('/login')
     }
   }, [])

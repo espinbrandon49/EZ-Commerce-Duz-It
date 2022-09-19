@@ -46,6 +46,7 @@ function App() {
       id: 0,
       status: false,
     });
+    window.location.replace("http://localhost:3000/")
   };
 
   return (
@@ -92,8 +93,7 @@ function App() {
 export default App;
 
 //display product's tags immediately, currently needs refresh
-//delete a category
-//update products
+//refreshing homepage navigates to login if I am logged in
 
-//fix navbar to render conditionally if loggedin/!loggedin
+//add user to category by username
 

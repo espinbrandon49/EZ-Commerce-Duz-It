@@ -11,12 +11,13 @@ const Home = () => {
   let navigate = useNavigate()
 
   useEffect(() => {
-    if (!authState.status) {
+    if (!localStorage.getItem('accessToken')) {
       navigate('/login')
     } else {
       axios.get('http://localhost:3001/api/categories').then((response) => {
         setCategories(response.data)
       })
+      navigate('/')
     }
   }, [])
 
@@ -29,7 +30,9 @@ const Home = () => {
             className="category"
             onClick={() => { navigate(`/category/${value.id}`) }}
           >
-            <div >{value.category_name}</div>
+            <div >{value.category_name} - {value.username}
+
+            </div>
           </div>
         )
       })}

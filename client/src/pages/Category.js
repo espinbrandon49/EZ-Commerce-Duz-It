@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -11,6 +11,7 @@ const Category = () => {
   const [products, setProducts] = useState([]);
   const [tags, setTags] = useState([]);
   const { authState } = useContext(AuthContext);
+  const navigate = useNavigate()
 
   useEffect(() => {
     axios.get(`http://localhost:3001/api/categories/${id}`).then((response) => {
@@ -22,10 +23,9 @@ const Category = () => {
     });
 
     axios.get(`http://localhost:3001/api/tags`).then((response) => {
-      setTags(response.data)
+      setTags(response.data);
     });
   }, []);
-  // console.log(authState)
 
   const initialValues = {
     product_name: "",
@@ -54,15 +54,16 @@ const Category = () => {
           console.log(response.data.error);
         } else {
           const productToAdd = response.data;
-          console.log(productToAdd)
-          setProducts([...products, data])
-          console.log(products)
+          console.log(productToAdd);
+          setProducts([...products, data]);
+          console.log(products);
           resetForm();
         }
-      })
+      });
   };
 
   const deleteProduct = (id) => {
+
     axios
       .delete(`http://localhost:3001/api/products/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
@@ -76,11 +77,34 @@ const Category = () => {
       });
   };
 
+  const deleteCategory = (id) => {
+    if (products.length > 0) {
+      alert("Cannot Delete Categories With Products")
+    } else {
+      axios
+        .delete(`http://localhost:3001/api/categories/${id}`, {
+          headers: { accessToken: localStorage.getItem("accessToken") },
+        })
+        .then(() => {
+          navigate('/')
+        })
+    }
+  }
+
   return (
     <div>
-      <h1>
-        CATEGORY ID: {singleCategory.id}. {singleCategory.category_name}
-      </h1>
+      <div>
+        <h1>
+          CATEGORY ID: {singleCategory.id}. {singleCategory.category_name}
+        </h1>
+        {authState.username === singleCategory.username &&
+          <button onClick={
+            () => { deleteCategory(singleCategory.id) }
+          }>
+            Delete Category
+          </button>
+        }
+      </div>
       <div>
         <h2>PRODUCTS</h2>
         <div>
@@ -93,15 +117,16 @@ const Category = () => {
                 </div>
                 <div>${value.price}</div>
                 <div>in Stock: {value.stock} </div>
-                <h3>PRODUCT TAGS:
-                  {
-                    tags.filter(tag => {
-                      let x = tag.products.map((el) => el.product_name)
+                <h3>
+                  PRODUCT TAGS:
+                  {tags
+                    .filter((tag) => {
+                      let x = tag.products.map((el) => el.product_name);
                       if (x.includes(value.product_name)) {
-                        return tag.tag_name
+                        return tag.tag_name;
                       }
-                    }).map(el => el.tag_name)
-                  }
+                    })
+                    .map((el) => el.tag_name)}
                 </h3>
                 {authState.username === value.username && <button onClick={() => deleteProduct(value.id)}> X</button>}
               </div>
@@ -125,16 +150,14 @@ const Category = () => {
               <br />
               <div id="checkbox-group">Tags</div>
               <div>
-                {
-                  tags.map((tag, key) => {
-                    return (
-                      <label key={key}>
-                        <Field type="checkbox" name="tagIds" value={tag.id.toString()} />
-                        {tag.tag_name}
-                      </label>
-                    )
-                  })
-                }
+                {tags.map((tag, key) => {
+                  return (
+                    <label key={key}>
+                      <Field type="checkbox" name="tagIds" value={tag.id.toString()} />
+                      {tag.tag_name}
+                    </label>
+                  );
+                })}
               </div>
               <button type="submit">Add A Product</button>
             </Form>
