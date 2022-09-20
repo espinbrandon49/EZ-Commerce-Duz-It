@@ -4,6 +4,9 @@ import { useEffect, useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from "../helpers/AuthContext";
 
+//update a product button if you are the user that created it
+//delete a product button if you are the user that created it
+
 const Home = () => {
   const [categories, setCategories] = useState([])
   const { authState } = useContext(AuthContext);
