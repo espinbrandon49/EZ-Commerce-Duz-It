@@ -5,6 +5,9 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { AuthContext } from "../helpers/AuthContext";
 
+//update a product button if you are the user that created it
+//DONE delete a product button if you are the user that created it
+
 const Category = () => {
   let { id } = useParams();
   const [singleCategory, setSingleCategory] = useState({});
@@ -64,7 +67,6 @@ const Category = () => {
   };
 
   const deleteProduct = (id) => {
-
     axios
       .delete(`http://localhost:3001/api/products/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
@@ -92,10 +94,69 @@ const Category = () => {
     }
   }
 
+  const editCategoryName = (defaultValue) => {
+    let newCategoryName = prompt('Enter new category name', defaultValue);
+    axios
+      .put("http://localhost:3001/api/categories/categoryName", {
+        newCategoryName: newCategoryName,
+        id: id
+      },
+        {
+          headers: { accessToken: localStorage.getItem("accessToken") },
+        }
+      );
+    setSingleCategory({ ...singleCategory, category_name: newCategoryName })
+  }
+
+  const editProduct = (field, defaultValue, pid) => {
+    if (field === "product_name") {
+      let newProductName = prompt('Enter new product name', defaultValue);
+      axios
+        .put("http://localhost:3001/api/products/productName", {
+          newProductName: newProductName,
+          id: pid
+        },
+          {
+            headers: { accessToken: localStorage.getItem("accessToken") },
+          }
+        );
+    } else if (field === "price") {
+      let newProductPrice = prompt('Enter new price', defaultValue);
+      axios
+        .put("http://localhost:3001/api/products/productPrice", {
+          newProductPrice: newProductPrice,
+          id: pid
+        },
+          {
+            headers: { accessToken: localStorage.getItem("accessToken") },
+          }
+        );
+    } else {
+      let newStock = prompt('Enter new stock count', defaultValue);
+      axios
+        .put("http://localhost:3001/api/products/stock", {
+          newStock: newStock,
+          id: pid
+        },
+          {
+            headers: { accessToken: localStorage.getItem("accessToken") },
+          }
+        );
+    }
+    // setProducts([, ...products])
+  
+  }
   return (
     <div>
       <div>
-        <h1>
+        <h1
+          className="categoryName"
+          onClick={() => {
+            if (authState.username === singleCategory.username) {
+              editCategoryName(singleCategory.category_name)
+            }
+          }}
+        >
           CATEGORY ID: {singleCategory.id}. {singleCategory.category_name}
         </h1>
         {authState.username === singleCategory.username &&
@@ -113,11 +174,32 @@ const Category = () => {
           {products.map((value, key) => {
             return (
               <div key={key}>
-                <div>
+                <div
+                  className="productName"
+                  onClick={() => {
+                    if (authState.username === value.username) {
+                      editProduct("product_name", value.product_name, value.id)
+                    }
+                  }}
+                >
                   Product ID: {value.id}. {value.product_name}
                 </div>
-                <div>${value.price}</div>
-                <div>in Stock: {value.stock} </div>
+                <div
+                  className="productPrice"
+                  onClick={() => {
+                    if (authState.username === value.username) {
+                      editProduct("price", value.price, value.id)
+                    }
+                  }}
+                >${value.price}</div>
+                <div
+                  className="productStock"
+                  onClick={() => {
+                    if (authState.username === value.username) {
+                      editProduct("stock", value.stock, value.id)
+                    }
+                  }}
+                >in Stock: {value.stock} </div>
                 <h3>
                   PRODUCT TAGS:
                   {tags

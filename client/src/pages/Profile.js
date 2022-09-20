@@ -3,11 +3,11 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 //all categories in a sidebar
+  //onclick go to category(done)
 //single user categories in a sidebar
-  //update categories
+  //onclick update user categories
 //main display products
   //products have tags
-  //update product onClick
   
 const Profile = () => {
   let { id } = useParams();

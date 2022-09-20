@@ -10,6 +10,8 @@ import Profile from "./pages/Profile";
 import PageNotFound from "./pages/PageNotFound";
 import { AuthContext } from "./helpers/AuthContext";
 // username can be accessed everywhere by importing {AuthContext} and using authState.username
+
+//add a dashboard button to navbar
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -95,5 +97,8 @@ function App() {
 export default App;
 
 //display product's tags immediately, currently needs refresh
-//see profile dashboard notes
+//display product's updates immediately, currently needs refresh
+//see profile dashboard notes...maybe do these, maybe don't
 
+//add edit category
+//add edit product
