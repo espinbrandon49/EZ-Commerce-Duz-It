@@ -28,7 +28,6 @@ const AddCategory = () => {
     axios.post('http://localhost:3001/api/categories', data, {
       headers: {accessToken: localStorage.getItem("accessToken")},
     }).then((response) => {
-      console.log(response.data)
       navigate('/')
     });
   };

@@ -5,9 +5,6 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { AuthContext } from "../helpers/AuthContext";
 
-//update a product button if you are the user that created it
-//DONE delete a product button if you are the user that created it
-
 const Category = () => {
   let { id } = useParams();
   const [singleCategory, setSingleCategory] = useState({});
@@ -48,7 +45,17 @@ const Category = () => {
 
   const onSubmit = (data, { resetForm }) => {
     axios
-      .post("http://localhost:3001/api/products", data, {
+      .post("http://localhost:3001/api/products", // data,
+       {    
+       product_name: data.product_name,
+       username: authState.username,
+       price: data.price,
+       stock: data.stock,
+       category_id: id,
+       userId: authState.id,
+       tagIds: [data.tagIds],
+      }, 
+       {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
         },
@@ -61,11 +68,12 @@ const Category = () => {
           console.log(productToAdd);
           setProducts([...products, data]);
           console.log(products);
+          // window.location.replace(`http://localhost:3000/category/${id}`)
           resetForm();
         }
       });
   };
-
+console.log(products)
   const deleteProduct = (id) => {
     axios
       .delete(`http://localhost:3001/api/products/${id}`, {
@@ -120,6 +128,7 @@ const Category = () => {
             headers: { accessToken: localStorage.getItem("accessToken") },
           }
         );
+        setProducts([...products])
     } else if (field === "price") {
       let newProductPrice = prompt('Enter new price', defaultValue);
       axios
@@ -130,7 +139,10 @@ const Category = () => {
           {
             headers: { accessToken: localStorage.getItem("accessToken") },
           }
-        );
+        )
+        .then(() => {
+          setProducts([...products,]);
+        });
     } else {
       let newStock = prompt('Enter new stock count', defaultValue);
       axios
@@ -143,8 +155,7 @@ const Category = () => {
           }
         );
     }
-    // setProducts([, ...products])
-  
+    window.location.replace(`http://localhost:3000/category/${id}`)
   }
   return (
     <div>

@@ -27,7 +27,7 @@ const Profile = () => {
     });
 
     axios.get(`http://localhost:3001/api/products/productbyuserId/${id}`).then((response) => {
-      console.log(response.data)
+      // console.log(response.data)
       setUserProducts(response.data);
     });
 
@@ -50,7 +50,7 @@ const Profile = () => {
               key={value.id}
               className="allProducts"
               onClick={() => {
-                navigate(`/category/${value.id}`);
+                navigate(`/category/${value.category_id}`);
               }}
             >
               <div>{value.product_name}</div>
