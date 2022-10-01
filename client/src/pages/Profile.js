@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
-//all categories in a sidebar
-  //onclick go to category(done)
-//single user categories in a sidebar
-  //onclick update user categories
-//main display products
-  //products have tags
+  const styles = {
+    width: {
+      width: "200px",
+      height: "200px"
+    },
+  };
+  
   
 const Profile = () => {
   let { id } = useParams();
@@ -40,6 +41,7 @@ const Profile = () => {
     <div>
       <div className="basicInfo">
         <h1>{username}</h1>
+        <img src="https://images.unsplash.com/photo-1631287381310-925554130169?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aGlraW5nJTIwYm9vdHN8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60" style={styles.width} alt=" "/>
       </div>
 
       <div className="listOfUserProducts">

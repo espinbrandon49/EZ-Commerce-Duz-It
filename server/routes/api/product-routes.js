@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
-
-const { validateToken } = require('../../middleWares/AuthMiddlewares')
+const multer = require('multer');
+const path = require('path');
+const { validateToken } = require('../../middleWares/AuthMiddlewares');
 
 // The `/api/products` endpoint
-
 // get all products
 // find all products
 // be sure to include its associated Category and Tag data
@@ -32,7 +32,6 @@ router.get('/:category_id', async (req, res) => {
     // const productData = await Product.findByPk(req.params.id, {
     //   include: [{ model: Category }, { model: Tag }]
     // });
-
     const category_id = req.params.category_id
     const products = await Product.findAll({ where: { category_id: category_id } });
 
@@ -54,19 +53,76 @@ router.get('/productbyuserId/:id', async (req, res) => {
   res.json(listOfProducts)
 })
 
+// UPLOAD IMAGE // UPLOAD IMAGE // UPLOAD IMAGE // UPLOAD IMAGE
+// const DIR = '../../public'
+const storage = multer.diskStorage({
+  destination: './public',
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
+  }
+})
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1000000 },
+  fileFilter: function (req, file, cb) {
+    checkFileType(file, cb)
+  }
+}).single('image')
+
+//Check file type
+function checkFileType(file, cb) {
+  //Allowed ext
+  const filetypes = /jpeg|jpg|png|gif/;
+  //Check ext
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
+  //Check mime
+  const mimetype = filetypes.test(file.mimetype);
+
+  if (mimetype && extname) {
+    return cb(null, true)
+  } else {
+    cb("Error: Images Only!")
+  }
+}
+
+router.post('/upload', (req, res) => {
+  upload(req, res, (err) => {
+    if (err) {
+      return res.send({
+        msg: err
+      });
+    } else {
+      console.log(req.file)
+
+      if (req.file === undefined) {
+        res.send({
+          msg: 'Error: No File Selected'
+        });
+      } else {
+        return res.send({
+          success: true,
+          file: `http://localhost:3001/public/${req.file.filename}`
+        })
+      }
+    }
+  });
+});
+
 // create new product
 router.post('/', validateToken, (req, res) => {
-  /* req.body should look like this...
-    {
-      product_name: "Basketball",
-      username: authState.username
-      price: 200.00,
-      stock: 3,
-      category_id: id,
-      userId: authState.id,
-      tagIds: [1, 2, 3, 4]
-    }
-  */
+  //req.body should look like this...
+  let newProduct = {
+    image: req.body.image,
+    product_name: req.body.product_name,
+    username: req.body.username,
+    price: req.body.price,
+    stock: req.body.stock,
+    category_id: req.body.category_id,
+    userId: req.body.userId,
+    tagIds: req.body.tagIds
+  }
+
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
@@ -88,6 +144,73 @@ router.post('/', validateToken, (req, res) => {
       res.status(400).json(err);
     });
 });
+
+// delete one product by its `id` value
+router.delete('/:id', async (req, res) => {
+  try {
+    const productData = await Product.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+
+    if (!productData) {
+      res.status(404).json({ message: 'No product found with this id' });
+      return
+    }
+
+    res.status(200).json(productData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.put('/productName', validateToken, async (req, res) => {
+  try {
+    const { newProductName, id } = req.body;
+    await Product.update(
+      { product_name: newProductName },
+      { where: { id: id } }
+    );
+    res.status(200).json(newProductName)
+  } catch (err) {
+    res.status(400).json(err)
+  }
+})
+
+router.put('/stock', validateToken, async (req, res) => {
+  try {
+    const { newStock, id } = req.body;
+    await Product.update(
+      { stock: newStock },
+      { where: { id: id } }
+    );
+    res.status(200).json(newStock)
+  } catch (err) {
+    res.status(400).json(err)
+  }
+})
+
+router.put('/productPrice', validateToken, async (req, res) => {
+  try {
+    const { newProductPrice, id } = req.body;
+    await Product.update(
+      { price: newProductPrice },
+      { where: { id: id } }
+    );
+    res.status(200).json(newProductPrice)
+  } catch (err) {
+    res.status(400).json(err)
+  }
+})
+
+module.exports = router;
+
+//image post route
+// app.post('/profile', upload.single('avatar'), function (req, res, next) {
+//   // req.file is the `avatar` file
+//   // req.body will hold the text fields, if there were any
+// })
 
 // update product
 // router.put('/:id', validateToken, (req, res) => {
@@ -130,64 +253,3 @@ router.post('/', validateToken, (req, res) => {
 //       res.status(400).json(err);
 //     });
 // });
-
-// delete one product by its `id` value
-router.delete('/:id', async (req, res) => {
-  try {
-    const productData = await Product.destroy({
-      where: {
-        id: req.params.id
-      }
-    });
-
-    if (!productData) {
-      res.status(404).json({ message: 'No product found with this id' });
-      return
-    }
-
-    res.status(200).json(productData);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-router.put('/productName', validateToken, async (req, res) => {
-  try {
-    const { newProductName, id } = req.body;
-    await Product.update(
-      { product_name: newProductName }, 
-      { where: { id: id } }
-    );
-    res.status(200).json(newProductName)
-  } catch (err) {
-    res.status(400).json(err)
-  }
-})
-
-router.put('/stock', validateToken, async (req, res) => {
-  try {
-    const { newStock, id } = req.body;
-    await Product.update(
-      { stock: newStock }, 
-      { where: { id: id } }
-    );
-    res.status(200).json(newStock)
-  } catch (err) {
-    res.status(400).json(err)
-  }
-})
-
-router.put('/productPrice', validateToken, async (req, res) => {
-  try {
-    const { newProductPrice, id } = req.body;
-    await Product.update(
-      { price: newProductPrice }, 
-      { where: { id: id } }
-    );
-    res.status(200).json(newProductPrice)
-  } catch (err) {
-    res.status(400).json(err)
-  }
-})
-
-module.exports = router;

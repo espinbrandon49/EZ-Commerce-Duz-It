@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Category, Product } = require('../../models');
+const { Category, Product, Tag } = require('../../models');
 const { validateToken } = require('../../middleWares/AuthMiddlewares')
 
 // The `/api/categories` endpoint
@@ -45,11 +45,30 @@ router.get('/byuserId/:id', async (req, res) => {
 })
 
 // create a new category
+// router.post('/', validateToken, async (req, res) => {
+//   try {
+//     const category = req.body;
+//     category.userId = req.user.id
+//     await Category.create(category)
+//     res.status(200).json(category)
+//   } catch (err) {
+//     res.status(400).json(err)
+//   }
+// });
+
 router.post('/', validateToken, async (req, res) => {
   try {
     const category = req.body;
     category.userId = req.user.id
     await Category.create(category)
+    // res.status(200).json(category)
+    
+    const tagName ={
+      // id: 50,
+      tag_name: req.body.category_name,
+      // products: []
+    } 
+    await Tag.create(tagName)
     res.status(200).json(category)
   } catch (err) {
     res.status(400).json(err)
