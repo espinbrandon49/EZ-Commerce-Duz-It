@@ -10,6 +10,7 @@ const Category = () => {
   const [singleCategory, setSingleCategory] = useState({});
   const [products, setProducts] = useState([]);
   const [tags, setTags] = useState([]);
+  const [image, setImage] = useState({})
   const { authState } = useContext(AuthContext);
   const navigate = useNavigate()
 
@@ -27,7 +28,18 @@ const Category = () => {
     });
   }, []);
 
+
+  let productTagId;
+  if (tags.length > 0) {
+    productTagId = tags.filter((value, key) => value.tag_name === singleCategory.category_name)[0].id.toString()
+  }
+  useEffect(() => {
+    //make productTagId stateful?
+  }, [])
+  console.log(products)
+
   const initialValues = {
+    image: "rangerTab.png",
     product_name: "",
     username: authState.username,
     price: "",
@@ -41,39 +53,60 @@ const Category = () => {
     product_name: Yup.string().min(3).max(15).required("Product names are 3-15 characters long"),
     price: Yup.number().required("Price is a number").positive(),
     stock: Yup.number().required("Stock is an integer").positive().integer(),
+    tagIds: Yup.number("Please Select A Tag").required("Please Select A Tag"),
   });
 
   const onSubmit = (data, { resetForm }) => {
+    console.log(data)
+    console.log(data.image)
+    sendImage()
     axios
       .post("http://localhost:3001/api/products", // data,
-       {    
-       product_name: data.product_name,
-       username: authState.username,
-       price: data.price,
-       stock: data.stock,
-       category_id: id,
-       userId: authState.id,
-       tagIds: [data.tagIds],
-      }, 
-       {
-        headers: {
-          accessToken: localStorage.getItem("accessToken"),
+        {
+          image: image.name.replace(/\s/g, '').toLowerCase(),
+          product_name: data.product_name,
+          username: authState.username,
+          price: data.price,
+          stock: data.stock,
+          category_id: id,
+          userId: authState.id,
+          tagIds: [data.tagIds],
         },
-      })
+        {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        })
       .then((response) => {
         if (response.data.error) {
           console.log(response.data.error);
         } else {
           const productToAdd = response.data;
-          console.log(productToAdd);
           setProducts([...products, data]);
-          console.log(products);
-          // window.location.replace(`http://localhost:3000/category/${id}`)
+          window.location.replace(`http://localhost:3000/category/${id}`)
+          navigate(`/category/${id}`)
           resetForm();
         }
       });
   };
-console.log(products)
+
+  //IMAGE POST //IMAGE POST //IMAGE POST //IMAGE POST //IMAGE POST
+  const fileOnChange = (event) => {
+    setImage(event.target.files[0])
+  }
+
+  const sendImage = (event) => {
+    // event.preventDefault()
+    console.log(image)
+    let formData = new FormData()
+    formData.append('image', image)
+    axios
+      .post("http://localhost:3001/api/products/upload", formData, {})
+      .then((response) => {
+        console.log(response)
+      })
+  }
+
   const deleteProduct = (id) => {
     axios
       .delete(`http://localhost:3001/api/products/${id}`, {
@@ -128,7 +161,7 @@ console.log(products)
             headers: { accessToken: localStorage.getItem("accessToken") },
           }
         );
-        setProducts([...products])
+      setProducts([...products])
     } else if (field === "price") {
       let newProductPrice = prompt('Enter new price', defaultValue);
       axios
@@ -155,7 +188,7 @@ console.log(products)
           }
         );
     }
-    window.location.replace(`http://localhost:3000/category/${id}`)
+    // window.location.replace(`http://localhost:3000/category/${id}`)
   }
   return (
     <div>
@@ -223,6 +256,8 @@ console.log(products)
                     .map((el) => el.tag_name)}
                 </h3>
                 {authState.username === value.username && <button onClick={() => deleteProduct(value.id)}> X</button>}
+                <h3>Product Image</h3>
+                <img src={`http://localhost:3001/public/image-${value.image}`} alt={`product that is a ${value.product_name}`}/>
               </div>
             );
           })}
@@ -243,6 +278,7 @@ console.log(products)
               <ErrorMessage name="stock" component="span" />
               <br />
               <div id="checkbox-group">Tags</div>
+              <ErrorMessage name="tagIds" component="div" />
               <div>
                 {tags.map((tag, key) => {
                   return (
@@ -253,6 +289,9 @@ console.log(products)
                   );
                 })}
               </div>
+
+              <input id="file" name="file" type="file" onChange={fileOnChange} />
+              <br />
               <button type="submit">Add A Product</button>
             </Form>
           </Formik>

@@ -96,9 +96,13 @@ function App() {
 
 export default App;
 
-//display product's tags immediately, currently needs refresh
-//display product's updates immediately, currently needs refresh
-//see profile dashboard notes...maybe do these, maybe don't
+//images
+//Add description to products
+//require a tag
+//bootstrap
+//readme
 
-//add edit category
-//add edit product
+//bugs
+  //Product tags do not populate immediately
+  //a product tag must be selected
+  //products can't be deleted immediately, need to reload

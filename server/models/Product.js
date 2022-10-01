@@ -15,6 +15,9 @@ Product.init(
       primaryKey: true,
       autoIncrement: true,
     },
+    image: {
+      type: DataTypes.STRING,
+    },
     product_name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -55,3 +58,11 @@ Product.init(
 );
 
 module.exports = Product;
+
+// const Image = sequelize.define('image', {
+
+//   ...
+//   data: {
+// 	type: Sequelize.BLOB('long')
+//   }
+// });
