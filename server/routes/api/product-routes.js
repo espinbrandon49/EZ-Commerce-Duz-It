@@ -58,7 +58,8 @@ router.get('/productbyuserId/:id', async (req, res) => {
 const storage = multer.diskStorage({
   destination: './public',
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
+    // cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
+    cb(null, file.fieldname + "-" + file.originalname.replace(/\s/g, '').toLowerCase());
   }
 })
 
@@ -100,10 +101,12 @@ router.post('/upload', (req, res) => {
           msg: 'Error: No File Selected'
         });
       } else {
-        return res.send({
-          success: true,
-          file: `http://localhost:3001/public/${req.file.filename}`
-        })
+        // return res.send({
+        //   success: true,
+        //   file: `http://localhost:3001/public/${req.file.filename}`
+        // })
+        console.log(`http://localhost:3001/public/${req.file.filename}`)
+        return res.send(`http://localhost:3001/public/${req.file.filename}`)
       }
     }
   });

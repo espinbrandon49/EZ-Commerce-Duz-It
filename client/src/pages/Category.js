@@ -58,11 +58,12 @@ const Category = () => {
 
   const onSubmit = (data, { resetForm }) => {
     console.log(data)
+    console.log(data.image)
     sendImage()
     axios
       .post("http://localhost:3001/api/products", // data,
         {
-          image: image.name,
+          image: image.name.replace(/\s/g, '').toLowerCase(),
           product_name: data.product_name,
           username: authState.username,
           price: data.price,
@@ -90,21 +91,12 @@ const Category = () => {
   };
 
   //IMAGE POST //IMAGE POST //IMAGE POST //IMAGE POST //IMAGE POST
-  // const imagePost = (data) => {
-  //   console.log(data)
-  //   axios
-  //     .post("http://localhost:3001/api/products/upload", data, {
-  //     })
-  //     .then((response) => {
-  //       console.log(response)
-  //     })
-  // }
-
   const fileOnChange = (event) => {
     setImage(event.target.files[0])
   }
 
   const sendImage = (event) => {
+    // event.preventDefault()
     console.log(image)
     let formData = new FormData()
     formData.append('image', image)
@@ -196,7 +188,7 @@ const Category = () => {
           }
         );
     }
-    window.location.replace(`http://localhost:3000/category/${id}`)
+    // window.location.replace(`http://localhost:3000/category/${id}`)
   }
   return (
     <div>
@@ -264,6 +256,8 @@ const Category = () => {
                     .map((el) => el.tag_name)}
                 </h3>
                 {authState.username === value.username && <button onClick={() => deleteProduct(value.id)}> X</button>}
+                <h3>Product Image</h3>
+                <img src={`http://localhost:3001/public/image-${value.image}`} alt={`product that is a ${value.product_name}`}/>
               </div>
             );
           })}
@@ -301,15 +295,6 @@ const Category = () => {
               <button type="submit">Add A Product</button>
             </Form>
           </Formik>
-
-          <h1>Upload Image</h1>
-
-          {/* <form action="http://localhost:3001/api/products/upload" encType="multipart/form-data" method="POST">
-            <input type="submit" />
-          </form>
-          <div>
-            <img src="http://localhost:3001/public/image-1664586261527.png" alt="lorem ipsum" />
-          </div> */}
         </div>
       </div>
     </div>
