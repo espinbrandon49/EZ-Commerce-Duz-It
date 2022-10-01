@@ -5,6 +5,13 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { AuthContext } from "../helpers/AuthContext";
 
+const styles = {
+  image: {
+    width: "200px",
+    height: "200px",
+  },
+}
+
 const Category = () => {
   let { id } = useParams();
   const [singleCategory, setSingleCategory] = useState({});
@@ -28,15 +35,16 @@ const Category = () => {
     });
   }, []);
 
+  // let productTagId;
+  // if (tags.length > 0) {
+  //   productTagId = tags.filter((value, key) => value.tag_name === singleCategory.category_name)[0].id.toString()
+  // }
+  // useEffect(() => {
+  //   //make productTagId stateful?
+  // }, [])
 
-  let productTagId;
-  if (tags.length > 0) {
-    productTagId = tags.filter((value, key) => value.tag_name === singleCategory.category_name)[0].id.toString()
-  }
-  useEffect(() => {
-    //make productTagId stateful?
-  }, [])
   console.log(products)
+  console.log(tags)
 
   const initialValues = {
     image: "rangerTab.png",
@@ -58,7 +66,7 @@ const Category = () => {
 
   const onSubmit = (data, { resetForm }) => {
     console.log(data)
-    console.log(data.image)
+    console.log(data.tagIds)
     sendImage()
     axios
       .post("http://localhost:3001/api/products", // data,
@@ -70,7 +78,7 @@ const Category = () => {
           stock: data.stock,
           category_id: id,
           userId: authState.id,
-          tagIds: [data.tagIds],
+          tagIds: data.tagIds,
         },
         {
           headers: {
@@ -257,7 +265,7 @@ const Category = () => {
                 </h3>
                 {authState.username === value.username && <button onClick={() => deleteProduct(value.id)}> X</button>}
                 <h3>Product Image</h3>
-                <img src={`http://localhost:3001/public/image-${value.image}`} alt={`product that is a ${value.product_name}`}/>
+                <img style={styles.image} src={`http://localhost:3001/public/image-${value.image}`} alt={`product that is a ${value.product}`}/>
               </div>
             );
           })}
