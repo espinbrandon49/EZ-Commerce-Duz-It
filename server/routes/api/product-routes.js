@@ -54,7 +54,6 @@ router.get('/productbyuserId/:id', async (req, res) => {
 })
 
 // UPLOAD IMAGE // UPLOAD IMAGE // UPLOAD IMAGE // UPLOAD IMAGE
-// const DIR = '../../public'
 const storage = multer.diskStorage({
   destination: './public',
   filename: function (req, file, cb) {
@@ -115,16 +114,16 @@ router.post('/upload', (req, res) => {
 // create new product
 router.post('/', validateToken, (req, res) => {
   //req.body should look like this...
-  let newProduct = {
-    image: req.body.image,
-    product_name: req.body.product_name,
-    username: req.body.username,
-    price: req.body.price,
-    stock: req.body.stock,
-    category_id: req.body.category_id,
-    userId: req.body.userId,
-    tagIds: req.body.tagIds
-  }
+  // let newProduct = {
+  //   image: req.body.image,
+  //   product_name: req.body.product_name,
+  //   username: req.body.username,
+  //   price: req.body.price,
+  //   stock: req.body.stock,
+  //   category_id: req.body.category_id,
+  //   userId: req.body.userId,
+  //   tagIds: req.body.tagIds
+  // }
 
   Product.create(req.body)
     .then((product) => {

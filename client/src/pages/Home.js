@@ -12,7 +12,7 @@ const Home = () => {
   const { authState } = useContext(AuthContext);
 
   let navigate = useNavigate()
-
+console.log(categories)
   useEffect(() => {
     if (!localStorage.getItem('accessToken')) {
       navigate('/login')
