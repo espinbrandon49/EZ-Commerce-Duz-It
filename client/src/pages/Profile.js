@@ -9,7 +9,6 @@ import { useNavigate, useParams } from "react-router-dom";
     },
   };
   
-  
 const Profile = () => {
   let { id } = useParams();
   const [username, setUsername] = useState("");
@@ -38,14 +37,14 @@ const Profile = () => {
   }, []);
 
   return (
-    <div>
+    <div className="container text-center">
       <div className="basicInfo">
-        <h1>{username}</h1>
+        <h2 className="display-2">{username}</h2>
         <img src="https://images.unsplash.com/photo-1631287381310-925554130169?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aGlraW5nJTIwYm9vdHN8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60" style={styles.width} alt=" "/>
       </div>
 
-      <div className="listOfUserProducts">
-        <h2>All User Products</h2>
+      <div >
+        <h2 className="display-6">All User Products</h2>
         {userProducts.map((value, key) => {
           return (
             <div
@@ -61,8 +60,8 @@ const Profile = () => {
         })}
       </div>
 
-      <div className="listOfCategories">
-        <h2>All User Categories</h2>
+      <div >
+        <h2 className="display-6">All User Categories</h2>
         {userCategories.map((value, key) => {
           return (
             <div
@@ -78,8 +77,8 @@ const Profile = () => {
         })}
       </div>
 
-      <div className="listOfCategories">
-        <h2>All Categories</h2>
+      <div >
+        <h2 className="display-6">All Categories</h2>
         {allCategories.map((value, key) => {
           return (
             <div

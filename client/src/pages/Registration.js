@@ -21,7 +21,7 @@ const Registration = () => {
 
   const onSubmit = (data) => {
     axios.post("http://localhost:3001/api/auth", data).then((response) => {
-      console.log(data);
+      // console.log(data);
     })
     .then(() => {
       login(data.username, data.password)

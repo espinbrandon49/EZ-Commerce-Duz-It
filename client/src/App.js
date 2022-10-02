@@ -105,15 +105,15 @@ function App() {
 
 export default App;
 
-//Add description to products (maybe)
-//Add images to categories
-//Add icons to tags
-//searchable
-//preview images
-//CRUD images
+//3. Add description to products (maybe)
+//1. profile avatar
+//5. searchable
+//4. preview images
+//2. CRUD product images
 
 //bugs
   //bootstrap
   //readme
+  //fix error messages in formik
   //Product tags do not populate immediately, need to reload
   //products can't be deleted immediately, need to reload

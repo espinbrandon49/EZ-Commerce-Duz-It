@@ -199,18 +199,18 @@ const Category = () => {
     // window.location.replace(`http://localhost:3000/category/${id}`)
   }
   return (
-    <div>
+    <div className="container">
       <div>
-        <h1
-          className="categoryName"
+        <h2
+          className="display-3"
           onClick={() => {
             if (authState.username === singleCategory.username) {
               editCategoryName(singleCategory.category_name)
             }
           }}
         >
-          CATEGORY ID: {singleCategory.id}. {singleCategory.category_name}
-        </h1>
+          {singleCategory.category_name}
+        </h2>
         {authState.username === singleCategory.username &&
           <button onClick={
             () => { deleteCategory(singleCategory.id) }
@@ -222,7 +222,6 @@ const Category = () => {
       <div>
         <h2>PRODUCTS</h2>
         <div>
-          Available
           {products.map((value, key) => {
             return (
               <div key={key}>
@@ -270,9 +269,8 @@ const Category = () => {
             );
           })}
         </div>
-        <div>
           <Formik onSubmit={onSubmit} initialValues={initialValues} validationSchema={validationSchema}>
-            <Form>
+            <Form className="text-center">
               <label>Product</label>
               <Field autoComplete="off" id="product_nameInput" name="product_name" placeholder="(Ex. Navy Blue Shorts...)" />
               <ErrorMessage name="product_name" component="span" />
@@ -287,6 +285,7 @@ const Category = () => {
               <br />
               <div id="checkbox-group">Tags</div>
               <ErrorMessage name="tagIds" component="div" />
+              
               <div>
                 {tags.map((tag, key) => {
                   return (
@@ -298,12 +297,13 @@ const Category = () => {
                 })}
               </div>
 
-              <input id="file" name="file" type="file" onChange={fileOnChange} />
+              <input id="file" name="file" type="file" onChange={fileOnChange} className="mb-3" />
               <br />
-              <button type="submit">Add A Product</button>
+
+              <button type="submit" className="btn btn-outline-primary">Add Product</button>
+
             </Form>
           </Formik>
-        </div>
       </div>
     </div>
   );
