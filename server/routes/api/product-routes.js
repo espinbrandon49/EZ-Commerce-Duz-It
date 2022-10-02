@@ -54,7 +54,6 @@ router.get('/productbyuserId/:id', async (req, res) => {
 })
 
 // UPLOAD IMAGE // UPLOAD IMAGE // UPLOAD IMAGE // UPLOAD IMAGE
-// const DIR = '../../public'
 const storage = multer.diskStorage({
   destination: './public',
   filename: function (req, file, cb) {
