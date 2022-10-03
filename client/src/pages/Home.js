@@ -34,7 +34,8 @@ const Home = () => {
             className="category"
             onClick={() => { navigate(`/category/${value.id}`) }}
           >
-            {value.category_name} {value.username === authState.username && "*" + value.username}
+            {/* {value.category_name} {value.username === authState.username && "*" + value.username} */}
+            {value.category_name} {value.username === authState.username &&"*"}
           </ListGroup.Item>
         )
       })}

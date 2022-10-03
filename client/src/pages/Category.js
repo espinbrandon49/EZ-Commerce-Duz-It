@@ -4,6 +4,8 @@ import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { AuthContext } from "../helpers/AuthContext";
+import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 const styles = {
   image: {
@@ -196,11 +198,13 @@ const Category = () => {
           }
         );
     }
-    // window.location.replace(`http://localhost:3000/category/${id}`)
+    window.location.replace(`http://localhost:3000/category/${id}`)
+    // navigate(`/category/${id}`)
   }
   return (
     <div className="container">
-      <div>
+
+      <div className="mb-3">
         <h2
           className="display-3"
           onClick={() => {
@@ -212,20 +216,25 @@ const Category = () => {
           {singleCategory.category_name}
         </h2>
         {authState.username === singleCategory.username &&
-          <button onClick={
-            () => { deleteCategory(singleCategory.id) }
-          }>
+          <button
+            onClick={
+              () => { deleteCategory(singleCategory.id) }
+            }
+            className="btn btn-outline-danger"
+          >
             Delete Category
           </button>
         }
       </div>
-      <div>
-        <h2>PRODUCTS</h2>
-        <div>
+
+        <div className="d-flex flex-wrap justify-content-center">
           {products.map((value, key) => {
             return (
-              <div key={key}>
-                <div
+              <Card key={key} style={{ width: '18rem' }} className="m-3" >
+
+                <Card.Img variant="top" src={`http://localhost:3001/public/image-${value.image}`} alt={`product that is a ${value.product}`} />
+
+                <Card.Body
                   className="productName"
                   onClick={() => {
                     if (authState.username === value.username) {
@@ -233,66 +242,95 @@ const Category = () => {
                     }
                   }}
                 >
-                  Product ID: {value.id}. {value.product_name}
-                </div>
-                <div
-                  className="productPrice"
-                  onClick={() => {
-                    if (authState.username === value.username) {
-                      editProduct("price", value.price, value.id)
-                    }
-                  }}
-                >${value.price}</div>
-                <div
-                  className="productStock"
-                  onClick={() => {
-                    if (authState.username === value.username) {
-                      editProduct("stock", value.stock, value.id)
-                    }
-                  }}
-                >in Stock: {value.stock} </div>
-                <h3>
-                  PRODUCT TAGS:
-                  {tags
-                    .filter((tag) => {
-                      let x = tag.products.map((el) => el.product_name);
-                      if (x.includes(value.product_name)) {
-                        return tag.tag_name;
+                  <Card.Title>{value.product_name}</Card.Title>
+                </Card.Body>
+
+                <ListGroup className="list-group-flush">
+                  <ListGroup.Item
+                    onClick={() => {
+                      if (authState.username === value.username) {
+                        editProduct("price", value.price, value.id)
                       }
-                    })
-                    .map((el) => el.tag_name)}
-                </h3>
-                {authState.username === value.username && <button onClick={() => deleteProduct(value.id)}> X</button>}
-                <h3>Product Image</h3>
-                <img style={styles.image} src={`http://localhost:3001/public/image-${value.image}`} alt={`product that is a ${value.product}`}/>
-              </div>
+                    }}
+                  >
+                    Price: ${value.price}
+                  </ListGroup.Item>
+
+                  <ListGroup.Item
+                    className="productStock"
+                    onClick={() => {
+                      if (authState.username === value.username) {
+                        editProduct("stock", value.stock, value.id)
+                      }
+                    }}
+                  >Stock: {value.stock}
+                  </ListGroup.Item>
+
+                  <ListGroup.Item>
+                    {tags
+                      .filter((tag) => {
+                        let x = tag.products.map((el) => el.product_name);
+                        if (x.includes(value.product_name)) {
+                          return tag.tag_name;
+                        }
+                      })
+                      .map((el) => <span>{el.tag_name}, </span>)}
+                  </ListGroup.Item>
+
+                </ListGroup>
+
+                <Card.Body>
+                  {authState.username === value.username &&
+                    <button
+                      variant="danger"
+                      onClick={() => deleteProduct(value.id)}
+                      className="btn btn-outline-danger"
+                    >
+                      Remove
+                    </button>}
+                </Card.Body>
+
+              </Card>
             );
           })}
         </div>
+
+        <div className="border border-primary p-3 mb-3">
+          <h3 className="display-6 mb-3">Add A Product</h3>
           <Formik onSubmit={onSubmit} initialValues={initialValues} validationSchema={validationSchema}>
-            <Form className="text-center">
-              <label>Product</label>
-              <Field autoComplete="off" id="product_nameInput" name="product_name" placeholder="(Ex. Navy Blue Shorts...)" />
-              <ErrorMessage name="product_name" component="span" />
-              <br />
-              <label>Price</label>
-              <Field autoComplete="off" id="priceInput" name="price" placeholder="(Ex.10...)" />
-              <ErrorMessage name="price" component="span" />
-              <br />
-              <label>Stock</label>
-              <Field autoComplete="off" id="stock_nameInput" name="stock" placeholder="(Ex. 10...)" />
-              <ErrorMessage name="stock" component="span" />
-              <br />
-              <div id="checkbox-group">Tags</div>
+            <Form className="container">
+
+              <div className="form-floating mb-3">
+                <Field autoComplete="off"
+                  className="form-control border border-info"
+                  id="product_nameInput" name="product_name" placeholder="(Ex. Navy Blue Shorts...)" />
+                <label>Product</label>
+                <ErrorMessage name="product_name" component="div" div />
+              </div>
+              <div className="form-floating mb-3">
+                <Field autoComplete="off"
+                  className="form-control border border-info"
+                  id="priceInput" name="price" placeholder="(Ex.10...)" />
+                <label>Price</label>
+                <ErrorMessage name="price" component="div" />
+              </div>
+              <div className="form-floating mb-3">
+                <Field autoComplete="off"
+                  className="form-control border border-info"
+                  id="stock_nameInput" name="stock" placeholder="(Ex. 10...)" />
+                <label>Stock</label>
+                <ErrorMessage name="stock" component="" />
+              </div>
+
+              {/* <div id="checkbox-group">Tags</div> */}
               <ErrorMessage name="tagIds" component="div" />
-              
-              <div>
+              <div className="mb-3">
                 {tags.map((tag, key) => {
                   return (
-                    <label key={key}>
-                      <Field type="checkbox" name="tagIds" value={tag.id.toString()} />
-                      {tag.tag_name}
-                    </label>
+                    <div className="form-check form-check-inline">
+                      <Field className="form-check-input" type="checkbox" name="tagIds" value={tag.id.toString()} />
+                      <label className="form-check-label" key={key}>{tag.tag_name}</label>
+                    </div>
                   );
                 })}
               </div>
@@ -304,7 +342,8 @@ const Category = () => {
 
             </Form>
           </Formik>
-      </div>
+        </div>
+
     </div>
   );
 };

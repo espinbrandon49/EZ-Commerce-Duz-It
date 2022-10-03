@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import ListGroup from 'react-bootstrap/ListGroup';
 
-  const styles = {
-    width: {
-      width: "200px",
-      height: "200px"
-    },
-  };
-  
+const styles = {
+  width: {
+    width: "200px",
+    height: "200px"
+  },
+};
+
 const Profile = () => {
   let { id } = useParams();
   const [username, setUsername] = useState("");
@@ -40,11 +41,11 @@ const Profile = () => {
     <div className="container text-center">
       <div className="basicInfo">
         <h2 className="display-2">{username}</h2>
-        <img src="https://images.unsplash.com/photo-1631287381310-925554130169?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aGlraW5nJTIwYm9vdHN8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60" style={styles.width} alt=" "/>
+        <img src="https://images.unsplash.com/photo-1631287381310-925554130169?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aGlraW5nJTIwYm9vdHN8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60" style={styles.width} alt=" " />
       </div>
 
       <div >
-        <h2 className="display-6">All User Products</h2>
+        <h2 className="display-6">Products</h2>
         {userProducts.map((value, key) => {
           return (
             <div
@@ -60,36 +61,38 @@ const Profile = () => {
         })}
       </div>
 
-      <div >
-        <h2 className="display-6">All User Categories</h2>
+      <div className="mb-3" >
+        <h2 className="display-6">Categories*</h2>
         {userCategories.map((value, key) => {
           return (
-            <div
+            <ListGroup action variant="primary"
               key={value.id}
               className="userCategory"
               onClick={() => {
                 navigate(`/category/${value.id}`);
               }}
             >
-              <div>Cat. Id - {value.id} {value.category_name}</div>
-            </div>
+              <ListGroup.Item action variant="primary">
+                {value.category_name}
+              </ListGroup.Item>
+            </ListGroup>
           );
         })}
       </div>
 
-      <div >
+      <div className="mb-3" >
         <h2 className="display-6">All Categories</h2>
         {allCategories.map((value, key) => {
           return (
-            <div
+            <ListGroup
               key={value.id}
               className="allCategory"
               onClick={() => {
                 navigate(`/category/${value.id}`);
               }}
             >
-              <div>Cat. Id - {value.id} {value.category_name}</div>
-            </div>
+              <ListGroup.Item action variant="primary">{value.category_name}</ListGroup.Item>
+            </ListGroup>
           );
         })}
       </div>
