@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import ListGroup from 'react-bootstrap/ListGroup';
+import Card from 'react-bootstrap/Card';
 
 const styles = {
   width: {
@@ -13,6 +14,7 @@ const styles = {
 const Profile = () => {
   let { id } = useParams();
   const [username, setUsername] = useState("");
+  const [image, setImage] = useState("");
   const [userCategories, setUserCategories] = useState([]);
   const [userProducts, setUserProducts] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
@@ -21,6 +23,7 @@ const Profile = () => {
   useEffect(() => {
     axios.get(`http://localhost:3001/api/auth/basicinfo/${id}`).then((response) => {
       setUsername(response.data.username);
+      setImage(response.data.image);
     });
 
     axios.get(`http://localhost:3001/api/categories/byuserId/${id}`).then((response) => {
@@ -36,29 +39,12 @@ const Profile = () => {
       setAllCategories(response.data);
     });
   }, []);
-
+console.log(username)
   return (
     <div className="container text-center">
-      <div className="basicInfo">
+      <div className="mb-3">
         <h2 className="display-2">{username}</h2>
-        <img src="https://images.unsplash.com/photo-1631287381310-925554130169?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aGlraW5nJTIwYm9vdHN8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60" style={styles.width} alt=" " />
-      </div>
-
-      <div >
-        <h2 className="display-6">Products</h2>
-        {userProducts.map((value, key) => {
-          return (
-            <div
-              key={value.id}
-              className="allProducts"
-              onClick={() => {
-                navigate(`/category/${value.category_id}`);
-              }}
-            >
-              <div>{value.product_name}</div>
-            </div>
-          );
-        })}
+        <img src={`http://localhost:3001/public/image-${image}`} style={styles.width} alt=" " />
       </div>
 
       <div className="mb-3" >
@@ -95,6 +81,27 @@ const Profile = () => {
             </ListGroup>
           );
         })}
+      </div>
+
+      <div >
+        <h2 className="display-6">Products</h2>
+        <div className="d-flex justify-content-center flex-wrap">
+        {userProducts.map((value, key) => {
+          return (
+            <Card
+              style={{ width: '18rem' }}
+              key={value.id}
+              className="allProducts m-3"
+              onClick={() => {
+                navigate(`/category/${value.category_id}`);
+              }}
+            >
+              <Card.Img variant="top" src={`http://localhost:3001/public/image-${value.image}`} />
+              <Card.Title>{value.product_name}</Card.Title>
+            </Card>
+          );
+        })}
+        </div>
       </div>
     </div>
   );

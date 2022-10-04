@@ -33,23 +33,22 @@ const AddCategory = () => {
   };
 
   return (
-      <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}  >
-        <Form className='container'>
-          <div className="form-floating mb-3" >
+    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}  >
+      <Form className='container'>
+        <div className="form-floating mb-3" >
           <Field
             className="form-control"
             autoComplete='off'
             id="categoryInput"
             name="category_name"
-            placeholder="(Ex. T-shirts...)"
           />
           <label>Category</label>
           <ErrorMessage name="category_name" component='div' />
-          </div>
-          <button type='submit' className="btn btn-outline-primary" >Submit</button>
+        </div>
+        <button type='submit' className="btn btn-outline-primary" >Submit</button>
 
-        </Form>
-      </Formik>
+      </Form>
+    </Formik>
   )
 }
 

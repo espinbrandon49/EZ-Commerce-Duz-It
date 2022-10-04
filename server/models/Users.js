@@ -2,7 +2,7 @@ const { Model, DataTypes } = require('sequelize');
 
 const sequelize = require('../config/connection.js');
 
-class Users extends Model {}
+class Users extends Model { }
 
 Users.init(
   {
@@ -20,6 +20,9 @@ Users.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    image: {
+      type: DataTypes.STRING
+    }
   },
   {
     sequelize,

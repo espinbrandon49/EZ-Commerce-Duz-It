@@ -7,13 +7,6 @@ import { AuthContext } from "../helpers/AuthContext";
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-const styles = {
-  image: {
-    width: "200px",
-    height: "200px",
-  },
-}
-
 const Category = () => {
   let { id } = useParams();
   const [singleCategory, setSingleCategory] = useState({});
@@ -63,7 +56,7 @@ const Category = () => {
     product_name: Yup.string().min(3).max(15).required("Product names are 3-15 characters long"),
     price: Yup.number().required("Price is a number").positive(),
     stock: Yup.number().required("Stock is an integer").positive().integer(),
-    tagIds: Yup.number("Please Select A Tag").required("Please Select A Tag"),
+    tagIds: Yup.number().required("Please Select A Tag").typeError('Please select at least one tag')
   });
 
   const onSubmit = (data, { resetForm }) => {
@@ -100,7 +93,7 @@ const Category = () => {
       });
   };
 
-  //IMAGE POST //IMAGE POST //IMAGE POST //IMAGE POST //IMAGE POST
+  //Post image
   const fileOnChange = (event) => {
     setImage(event.target.files[0])
   }

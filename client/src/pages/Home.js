@@ -1,15 +1,13 @@
 import React from 'react'
 import axios from 'axios'
 import { useEffect, useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from "../helpers/AuthContext";
 import ListGroup from 'react-bootstrap/ListGroup';
 
-//update a product button if you are the user that created it
-//delete a product button if you are the user that created it
-
 const Home = () => {
   const [categories, setCategories] = useState([])
+  // const [products, setProducts] = useState([])
   const { authState } = useContext(AuthContext);
 
   let navigate = useNavigate()
@@ -21,12 +19,17 @@ const Home = () => {
       axios.get('http://localhost:3001/api/categories').then((response) => {
         setCategories(response.data)
       })
+      // axios.get('http://localhost:3001/api/products').then((response) => {
+      //   setProducts(response.data)
+      // })
       navigate('/')
     }
   }, [])
 
+  // console.log(products)
+
   return (
-    <ListGroup className='container'>
+    <ListGroup className='container text-center'>
       {categories.map((value, key) => {
         return (
           <ListGroup.Item action variant="primary"
