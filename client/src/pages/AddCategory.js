@@ -26,29 +26,29 @@ const AddCategory = () => {
 
   const onSubmit = (data) => {
     axios.post('http://localhost:3001/api/categories', data, {
-      headers: {accessToken: localStorage.getItem("accessToken")},
+      headers: { accessToken: localStorage.getItem("accessToken") },
     }).then((response) => {
       navigate('/')
     });
   };
 
   return (
-    <div className='addCategoryPage'>
-      <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}  >
-        <Form>
-          <label >Category: </label>
-
+    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}  >
+      <Form className='container'>
+        <div className="form-floating mb-3" >
           <Field
+            className="form-control"
             autoComplete='off'
             id="categoryInput"
             name="category_name"
-            placeholder="(Ex. T-shirts...)"
           />
-          <button type='submit'>Add A Category</button>
+          <label>Category</label>
           <ErrorMessage name="category_name" component='div' />
-        </Form>
-      </Formik>
-    </div>
+        </div>
+        <button type='submit' className="btn btn-outline-primary" >Submit</button>
+
+      </Form>
+    </Formik>
   )
 }
 

@@ -105,15 +105,13 @@ function App() {
 
 export default App;
 
-//Add description to products (maybe)
-//Add images to categories
-//Add icons to tags
-//searchable
-//preview images
-//CRUD images
+//5. searchable
+//4. preview images
+//2. CRUD product images (also delete from public when product is deleted)
 
 //bugs
-  //bootstrap
   //readme
+
+  //Product updates/edits do not populate immediately, need to reload
   //Product tags do not populate immediately, need to reload
-  //products can't be deleted immediately, need to reload
+  //Products can't be deleted immediately, need to reload

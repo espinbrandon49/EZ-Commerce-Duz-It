@@ -10,7 +10,8 @@ router.post('/', async (req, res) => {
   bcrypt.hash(password, 10).then((hash) => {
     Users.create({
       username: username,
-      password: hash
+      password: hash,
+      image: req.body.image
     })
     res.json('SUCCESS')
   });

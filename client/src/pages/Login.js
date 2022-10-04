@@ -30,7 +30,6 @@ const Login = () => {
   };
 
   return (
-    // <Form autoComplete="false" className="container">
     <div className="container">
       <FloatingLabel
         controlId="floatingInput"
@@ -50,7 +49,7 @@ const Login = () => {
         controlId="floatingPassword"
         label="Password"
         className="mb-3"
-        >
+      >
         <Form.Control
           type="password"
           placeholder="Password"
@@ -63,7 +62,7 @@ const Login = () => {
         onClick={login}
         className="btn btn-outline-primary"
       >Login</button>
-      </div>
+    </div>
   );
 };
 
